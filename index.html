@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="EditCrafter Tuning-free High-Resolution Image Editing via Pretrained Diffusion Model">
+  <meta name="keywords" content="EditCrafter, Diffusion models, High-Resolution Image Editing">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>EditCrafter: Tuning-free High-Resolution Image Editing via Pretrained Diffusion Model</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <style>.slider-item .qualitative-results-card{display:flex!important;flex-direction:column!important}</style>
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">EditCrafter: Tuning-free High-Resolution Image Editing via Pretrained Diffusion Model</h1>
+          <div style="font-size:x-large;">CVPRW 2026</div><br>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://soulmates2.github.io/">Kunho Kim<sup>1</sup></a>,</span>
+            <span class="author-block">
+              <a href="https://soochem.github.io/">Sumin Seo<sup>2</sup></a>,</span>
+            <span class="author-block">
+              <a href="https://yongjuncho.com/">Yongjun Cho<sup>3<sup></a>,</span>
+            <span class="author-block">
+              <a href="https://hyungjin-chung.github.io/">Hyungjin Chung<sup>4</sup></a></span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>NC AI</span>
+            <span class="author-block"><sup>2</sup>Medipixel, Inc.</span>
+            <span class="author-block"><sup>3</sup>MAUM.AI</span>
+            <span class="author-block"><sup>4</sup>EverEx</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="static/EditCrafter.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2604.10268"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/EditCrafter/EditCrafter"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <span class="link-block">
+                <a href="https://drive.google.com/file/d/1SEMuxQtIFI5Zfp4Ay7GsbpZKsxIo0mJX/view?usp=sharing"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fa-regular fa-images"></i>
+                  </span>
+                  <span>Dataset</span>
+                  </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div class="container">
+  <div class="content has-text-centered">
+    <video id="main_video" controls autoplay muted loop style="max-width: 100%; border: 3px solid #000000;">
+      <source src="static/videos/main_video.mp4">
+    </video>
+    <p>
+      <span class="dnerf">EditCrafter</span> can edit images up to 4K resolutions by leveraging pre-trained Text-to-Image diffusion models without additional fine-tuning or optimization.
+    </p>
+  </div>
+</div>
+
+<script>
+   document.getElementById('main_video').play();
+</script>
+
+
+<!-- Abstract -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered is-flex-direction-column">
+      <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We propose EditCrafter, a high-resolution image editing method that operates without tuning, leveraging pretrained text-to-image (T2I) diffusion models 
+            to process images at resolutions significantly exceeding those used during training. Leveraging the generative priors of large-scale T2I diffusion models 
+            enables the development of a wide array of novel generation and editing applications. Although numerous image editing methods have been proposed based on 
+            diffusion models and exhibit high-quality editing results, they are difficult to apply to images with arbitrary aspect ratios or higher resolutions 
+            since they only work at the training resolutions (512×512 or 1024×1024). Naively applying patch-wise editing fails with unrealistic object structures and repetition. 
+            To address these challenges, we introduce EditCrafter, a simple yet effective editing pipeline. 
+            EditCrafter operates by first performing tiled inversion, which preserves the original identity of the input high-resolution image. 
+            We further propose a noise-damped manifold-constrained classifier-free guidance (NDCFG++) that is tailored for high resolution image editing from the inverted latent. 
+            Our experiments show that the our EditCrafter can achieve impressive editing results across various resolutions without fine-tuning and optimization.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- Pipeline -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered is-flex-direction-column">
+      <h2 class="title is-3">Pipeline</h2>
+      <div class="container">
+        <img src="./static/images/pipeline.png" alt="Pipeline">
+      </div>
+      <br>
+      <div class="content has-text-justified">
+        <p>
+          Since the noise estimator (U-Net) in Stable Diffusion is trained on low-resolution images, directly inverting an 
+          encoded high-resolution image <i></i>z<sub>0</sub> = E(x<sub>0</sub>)</i> into a high-resolution latent z<sub>t</sub> for 
+          subsequent editing results in poor identity preservation.
+          So, we first perform tiled DDIM inversion to generate a high-resolution latent representation. 
+          Utilizing this latent, the reverse diffusion process is carried out with a re-dilated noise estimator. 
+          To enhance the quality of text-guided editing, we propose manifold-constrained noise-damped classifier-free guidance (NDCFG++). 
+          In this figure, editing prompt P is “A raccoon peeking out from behind a bush”.
+        </p>
+      </div>
+    </div>
+  </div>
+</section><hr>
+
+
+
+<!-- Qualitative Results from Paper -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered is-flex-direction-column"><br>
+      <div class="has-text-centered"><h2 class="title is-3">Qualitative Comparisons</h2></div><br>
+    <p><span class="dnerf">EditCrafter</span> generates highly faithful editing images that are well-aligned with the editing prompts while preserving the intricate details of the original images.
+      <a href="https://subin-kim-cv.github.io/CSD/" target="_blank">CSD</a><sup>[1]</sup> frequently exhibits repetitive objects due to its patch-wise generation scheme.<br></br></p>
+
+    <div class="qualitative-results-groups">
+      <div class="qualitative-results-family">
+        <h3 class="qualitative-results-family-heading">Stable Diffusion 2.1</h3>
+        <p class="qualitative-results-family-description">Utilizing a pretrained model trained on a resolution of 512&times;512, our method can edit images with a resolution of up to 2048&times;2048 without the need for fine-tuning/optimization.</p>
+
+        <div class="qualitative-results-resolution-group">
+          
+          <div class="carousel results-carousel qualitative-results-carousel qualitative-results-carousel-active">
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">Stable Diffusion 2.1</p>
+                <p class="qualitative-results-card-scale">4&times; (1024&times;1024)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i>...<b>on a rainy street, reflecting city lights.</b></i> &rarr; <i>...<b>in a desert setting at sunset.</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_4x_car_original.jpg" alt="Stable Diffusion 2.1 4x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_4x_car_csd.jpg" alt="Stable Diffusion 2.1 4x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sd21_4x_car_edited.jpg" alt="Stable Diffusion 2.1 4x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">Stable Diffusion 2.1</p>
+                <p class="qualitative-results-card-scale">4&times; (1024&times;1024)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>moon</b></i> &rarr; <i><b>earth</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_4x_moon_original.jpg" alt="Stable Diffusion 2.1 4x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_4x_moon_csd.jpg" alt="Stable Diffusion 2.1 4x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sd21_4x_moon_edited.jpg" alt="Stable Diffusion 2.1 4x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">Stable Diffusion 2.1</p>
+                <p class="qualitative-results-card-scale">4&times; (1024&times;1024)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i>...lying on a cozy <b>blanket</b></i> &rarr; <i>...lying on a <b>grassy field</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_4x_cat_original.jpg" alt="Stable Diffusion 2.1 4x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_4x_cat_csd.jpg" alt="Stable Diffusion 2.1 4x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sd21_4x_cat_edited.jpg" alt="Stable Diffusion 2.1 4x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">Stable Diffusion 2.1</p>
+                <p class="qualitative-results-card-scale">4&times; (1024&times;1024)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>cactus</b></i> &rarr; <i><b>aloe</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_4x_cactus_original.jpg" alt="Stable Diffusion 2.1 4x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_4x_cactus_csd.jpg" alt="Stable Diffusion 2.1 4x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sd21_4x_cactus_edited.jpg" alt="Stable Diffusion 2.1 4x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">Stable Diffusion 2.1</p>
+                <p class="qualitative-results-card-scale">4&times; (1024&times;1024)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i>...with a <b>lemon</b> slice</i> &rarr; <i>...with a <b>cucumber</b> slice</i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_4x_lemon_original.jpg" alt="Stable Diffusion 2.1 4x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_4x_lemon_csd.jpg" alt="Stable Diffusion 2.1 4x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sd21_4x_lemon_edited.jpg" alt="Stable Diffusion 2.1 4x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">Stable Diffusion 2.1</p>
+                <p class="qualitative-results-card-scale">4&times; (1024&times;1024)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>tulips</b></i> &rarr; <i><b>roses</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_4x_tulips_original.jpg" alt="Stable Diffusion 2.1 4x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_4x_tulips_csd.jpg" alt="Stable Diffusion 2.1 4x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sd21_4x_tulips_edited.jpg" alt="Stable Diffusion 2.1 4x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">Stable Diffusion 2.1</p>
+                <p class="qualitative-results-card-scale">4&times; (1024&times;1024)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>village</b></i> &rarr; <i><b>castle</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_4x_village_original.jpg" alt="Stable Diffusion 2.1 4x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_4x_village_csd.jpg" alt="Stable Diffusion 2.1 4x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sd21_4x_village_edited.jpg" alt="Stable Diffusion 2.1 4x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="qualitative-results-resolution-group">
+          
+          <div class="carousel results-carousel qualitative-results-carousel qualitative-results-carousel-active">
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">Stable Diffusion 2.1</p>
+                <p class="qualitative-results-card-scale">8&times; (2048&times;1024)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>tiger</b></i> &rarr; <i><b>panda</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_8x_tiger_original.jpg" alt="Stable Diffusion 2.1 8x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_8x_tiger_csd.jpg" alt="Stable Diffusion 2.1 8x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sd21_8x_tiger_edited.jpg" alt="Stable Diffusion 2.1 8x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">Stable Diffusion 2.1</p>
+                <p class="qualitative-results-card-scale">8&times; (2048&times;1024)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>eagle</b></i> &rarr; <i><b>dragon</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_8x_eagle_original.jpg" alt="Stable Diffusion 2.1 8x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_8x_eagle_csd.jpg" alt="Stable Diffusion 2.1 8x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sd21_8x_eagle_edited.jpg" alt="Stable Diffusion 2.1 8x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">Stable Diffusion 2.1</p>
+                <p class="qualitative-results-card-scale">8&times; (2048&times;1024)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>fox</b></i> &rarr; <i><b>lion</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_8x_fox_original.jpg" alt="Stable Diffusion 2.1 8x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_8x_fox_csd.jpg" alt="Stable Diffusion 2.1 8x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sd21_8x_fox_edited.jpg" alt="Stable Diffusion 2.1 8x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">Stable Diffusion 2.1</p>
+                <p class="qualitative-results-card-scale">8&times; (2048&times;1024)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>barn owl</b></i> &rarr; <i><b>hawk</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_8x_owl_original.jpg" alt="Stable Diffusion 2.1 8x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_8x_owl_csd.jpg" alt="Stable Diffusion 2.1 8x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sd21_8x_owl_edited.jpg" alt="Stable Diffusion 2.1 8x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">Stable Diffusion 2.1</p>
+                <p class="qualitative-results-card-scale">8&times; (2048&times;1024)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>palm tree</b></i> &rarr; <i><b>beach umbrella</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_8x_palm_original.jpg" alt="Stable Diffusion 2.1 8x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_8x_palm_csd.jpg" alt="Stable Diffusion 2.1 8x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sd21_8x_palm_edited.jpg" alt="Stable Diffusion 2.1 8x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">Stable Diffusion 2.1</p>
+                <p class="qualitative-results-card-scale">8&times; (2048&times;1024)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>shark</b></i> &rarr; <i><b>dolphin</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_8x_shark_original.jpg" alt="Stable Diffusion 2.1 8x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_8x_shark_csd.jpg" alt="Stable Diffusion 2.1 8x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sd21_8x_shark_edited.jpg" alt="Stable Diffusion 2.1 8x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="qualitative-results-resolution-group">
+          
+          <div class="carousel results-carousel qualitative-results-carousel qualitative-results-carousel-active">
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">Stable Diffusion 2.1</p>
+                <p class="qualitative-results-card-scale">16&times; (2048&times;2048)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>chameleon</b></i> &rarr; <i><b>koala</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_16x_chameleon_original.jpg" alt="Stable Diffusion 2.1 16x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_16x_chameleon_csd.png" alt="Stable Diffusion 2.1 16x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sd21_16x_chameleon_edited.jpg" alt="Stable Diffusion 2.1 16x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">Stable Diffusion 2.1</p>
+                <p class="qualitative-results-card-scale">16&times; (2048&times;2048)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>berries</b></i> &rarr; <i><b>roses</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_16x_pancakes_original.jpg" alt="Stable Diffusion 2.1 16x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_16x_pancakes_csd.png" alt="Stable Diffusion 2.1 16x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sd21_16x_pancakes_edited.jpg" alt="Stable Diffusion 2.1 16x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+            
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">Stable Diffusion 2.1</p>
+                <p class="qualitative-results-card-scale">16&times; (2048&times;2048)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>cat</b></i> &rarr; <i><b>goat</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_16x_cat_original.jpg" alt="Stable Diffusion 2.1 16x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_16x_cat_csd.png" alt="Stable Diffusion 2.1 16x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sd21_16x_cat_edited.jpg" alt="Stable Diffusion 2.1 16x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">Stable Diffusion 2.1</p>
+                <p class="qualitative-results-card-scale">16&times; (2048&times;2048)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>soccer ball</b></i> &rarr; <i><b>crystal ball</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_16x_soccer_original.jpg" alt="Stable Diffusion 2.1 16x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sd21_16x_soccer_csd.png" alt="Stable Diffusion 2.1 16x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sd21_16x_soccer_edited.jpg" alt="Stable Diffusion 2.1 16x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qualitative-results-family">
+        <h3 class="qualitative-results-family-heading">SDXL 1.0</h3>
+        <p class="qualitative-results-family-description">Utilizing a pretrained model trained on a resolution of 1024&times;1024, our method can edit images with a resolution of up to 4096&times;4096 without the need for fine-tuning/optimization.</p>
+
+        <div class="qualitative-results-resolution-group">
+          
+          <div class="carousel results-carousel qualitative-results-carousel qualitative-results-carousel-active">
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">SDXL 1.0</p>
+                <p class="qualitative-results-card-scale">4&times; (2048&times;2048)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>dandelion seeds</b></i> &rarr; <i><b>balloon</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_4x_dandelion_original.jpg" alt="SDXL 1.0 4x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_4x_dandelion_csd.png" alt="SDXL 1.0 4x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sdxl_4x_dandelion_edited.jpg" alt="SDXL 1.0 4x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">SDXL 1.0</p>
+                <p class="qualitative-results-card-scale">4&times; (2048&times;2048)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>asphalt</b></i> &rarr; <i><b>desert</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_4x_motorcycle_original.jpg" alt="SDXL 1.0 4x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_4x_motorcycle_csd.png" alt="SDXL 1.0 4x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sdxl_4x_motorcycle_edited.jpg" alt="SDXL 1.0 4x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">SDXL 1.0</p>
+                <p class="qualitative-results-card-scale">4&times; (2048&times;2048)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>gems</b></i> &rarr; <i><b>bones</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_4x_treasure_original.jpg" alt="SDXL 1.0 4x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_4x_treasure_csd.png" alt="SDXL 1.0 4x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sdxl_4x_treasure_edited.jpg" alt="SDXL 1.0 4x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">SDXL 1.0</p>
+                <p class="qualitative-results-card-scale">4&times; (2048&times;2048)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>phoenix</b></i> &rarr; <i><b>chicken</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_4x_phoenix_original.jpg" alt="SDXL 1.0 4x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_4x_phoenix_csd.png" alt="SDXL 1.0 4x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sdxl_4x_phoenix_edited.jpg" alt="SDXL 1.0 4x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+
+
+          </div>
+        </div>
+
+        <div class="qualitative-results-resolution-group">
+          
+          <div class="carousel results-carousel qualitative-results-carousel qualitative-results-carousel-active">
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">SDXL 1.0</p>
+                <p class="qualitative-results-card-scale">8&times; (4096&times;2048)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>cherry blossom</b></i> &rarr; <i><b>maple</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_8x_cherry_original.jpg" alt="SDXL 1.0 8x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_8x_cherry_csd.jpg" alt="SDXL 1.0 8x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sdxl_8x_cherry_edited.jpg" alt="SDXL 1.0 8x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">SDXL 1.0</p>
+                <p class="qualitative-results-card-scale">8&times; (4096&times;2048)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>beanstalk</b></i> &rarr; <i><b>mushroom</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_8x_beanstalk_original.jpg" alt="SDXL 1.0 8x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_8x_beanstalk_csd.jpg" alt="SDXL 1.0 8x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sdxl_8x_beanstalk_edited.jpg" alt="SDXL 1.0 8x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">SDXL 1.0</p>
+                <p class="qualitative-results-card-scale">8&times; (4096&times;2048)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>lion</b></i> &rarr; <i><b>tiger</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_8x_lion_original.jpg" alt="SDXL 1.0 8x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_8x_lion_csd.jpg" alt="SDXL 1.0 8x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sdxl_8x_lion_edited.jpg" alt="SDXL 1.0 8x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">SDXL 1.0</p>
+                <p class="qualitative-results-card-scale">8&times; (4096&times;2048)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>seashell</b></i> &rarr; <i><b>crab</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_8x_seashell_original.jpg" alt="SDXL 1.0 8x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_8x_seashell_csd.jpg" alt="SDXL 1.0 8x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sdxl_8x_seashell_edited.jpg" alt="SDXL 1.0 8x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">SDXL 1.0</p>
+                <p class="qualitative-results-card-scale">8&times; (4096&times;2048)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>snow globe</b></i> &rarr; <i><b>jungle globe</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_8x_snowglobe_original.jpg" alt="SDXL 1.0 8x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_8x_snowglobe_csd.jpg" alt="SDXL 1.0 8x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sdxl_8x_snowglobe_edited.jpg" alt="SDXL 1.0 8x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">SDXL 1.0</p>
+                <p class="qualitative-results-card-scale">8&times; (4096&times;2048)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>humpback whale</b></i> &rarr; <i><b>green sea turtle</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_8x_whale_original.jpg" alt="SDXL 1.0 8x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_8x_whale_csd.jpg" alt="SDXL 1.0 8x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sdxl_8x_whale_edited.jpg" alt="SDXL 1.0 8x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="qualitative-results-resolution-group">
+          
+          <div class="carousel results-carousel qualitative-results-carousel qualitative-results-carousel-active">
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">SDXL 1.0</p>
+                <p class="qualitative-results-card-scale">16&times; (4096&times;4096)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>forest</b></i> &rarr; <i><b>burning forest</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_16x_bottle_original.jpg" alt="SDXL 1.0 16x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_16x_bottle_csd.jpg" alt="SDXL 1.0 16x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sdxl_16x_bottle_edited.jpg" alt="SDXL 1.0 16x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">SDXL 1.0</p>
+                <p class="qualitative-results-card-scale">16&times; (4096&times;4096)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>apple</b></i> &rarr; <i><b>pink peach</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_16x_apple_original.jpg" alt="SDXL 1.0 16x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_16x_apple_csd.jpg" alt="SDXL 1.0 16x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sdxl_16x_apple_edited.jpg" alt="SDXL 1.0 16x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">SDXL 1.0</p>
+                <p class="qualitative-results-card-scale">16&times; (4096&times;4096)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>bee</b></i> &rarr; <i><b>hummingbird</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_16x_bee_original.jpg" alt="SDXL 1.0 16x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_16x_bee_csd.jpg" alt="SDXL 1.0 16x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sdxl_16x_bee_edited.jpg" alt="SDXL 1.0 16x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">SDXL 1.0</p>
+                <p class="qualitative-results-card-scale">16&times; (4096&times;4096)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>bird</b></i> &rarr; <i><b>owl</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_16x_bird_original.jpg" alt="SDXL 1.0 16x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_16x_bird_csd.png" alt="SDXL 1.0 16x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sdxl_16x_bird_edited.jpg" alt="SDXL 1.0 16x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">SDXL 1.0</p>
+                <p class="qualitative-results-card-scale">16&times; (4096&times;4096)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>mountain</b></i> &rarr; <i><b>sand dune</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_16x_mountain_original.jpg" alt="SDXL 1.0 16x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_16x_mountain_csd.png" alt="SDXL 1.0 16x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sdxl_16x_mountain_edited.jpg" alt="SDXL 1.0 16x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">SDXL 1.0</p>
+                <p class="qualitative-results-card-scale">16&times; (4096&times;4096)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>stone</b></i> &rarr; <i><b>Stonehenge</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_16x_stonehenge_original.jpg" alt="SDXL 1.0 16x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_16x_stonehenge_csd.jpg" alt="SDXL 1.0 16x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sdxl_16x_stonehenge_edited.jpg" alt="SDXL 1.0 16x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <div class="item qualitative-results-card">
+              <div class="qualitative-results-card-header">
+                <p class="qualitative-results-card-model">SDXL 1.0</p>
+                <p class="qualitative-results-card-scale">16&times; (4096&times;4096)</p>
+              </div>
+              <p class="qualitative-results-card-caption"><i><b>waterfall</b></i> &rarr; <i><b>lava flow</b></i></p>
+              <div class="qualitative-results-card-grid">
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_16x_waterfall_original.jpg" alt="SDXL 1.0 16x original image" style="max-width:100%;">
+                  <figcaption>Original Image</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel">
+                  <img src="./static/images/qualitative/sdxl_16x_waterfall_csd.jpg" alt="SDXL 1.0 16x CSD result" style="max-width:100%;">
+                  <figcaption>CSD [Kim et al. 2023]</figcaption>
+                </figure>
+                <figure class="qualitative-results-panel is-highlight">
+                  <img src="./static/images/qualitative/sdxl_16x_waterfall_edited.jpg" alt="SDXL 1.0 16x EditCrafter result" style="max-width:100%;">
+                  <figcaption>EditCrafter (Ours)</figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+  </div>
+</section>
+
+
+<section class="section" id="References">
+  <div class="container is-max-desktop content">
+    <h2 class="title">References</h2>
+    <p>[1] Subin Kim, Kyungmin Lee, June Suk Choi, Jongheon Jeong, Kihyuk Sohn, Jinwoo Shin. <em>Collaborative Score Distillation for Consistent Visual Synthesis.</em> NeurIPS, 2023.</p>
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@inproceedings{
+    kim2026editcrafter,
+    title={{EditCrafter: Tuning-free High-Resolution Image Editing via Pretrained Diffusion Model}},
+    author={Kunho Kim and Sumin Seo and Yongjun Cho and Hyungjin Chung},
+    booktitle={CVPR 2nd Workshop on Human-Interactive Generation and Editing},
+    year={2026},
+}</code></pre>
+  </div>
+</section>
+
+
+<script src="static/js/script.js"></script>
+<script>
+  new BeforeAfter({
+    id: "#example1"
+  });
+  new BeforeAfter({
+    id: "#example2"
+  });
+  new BeforeAfter({
+    id: "#example3"
+  });
+</script>
+
+<!-- ========== Clustrmaps ========== -->
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="./static/EditCrafter_compressed.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/EditCrafter" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            The website is based on <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>. We thank 
+            <a href="https://keunhong.com/">Keunhong Park</a> for kindly open-sourcing the source code.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="clustrmaps">
+      <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=a&t=tt&d=JdtyNy5D43CBtu4hPPudjlLa4eSH8iW3bfn152JN2rM'></script>
+    </div>
+  </div>
+</footer>
+
+<div id="lightbox-overlay" class="lightbox-overlay" style="display:none">
+  <button class="lightbox-nav lightbox-prev" id="lightbox-prev">&#10094;</button>
+  <div class="lightbox-content">
+    <div class="lightbox-grid" id="lightbox-grid"></div>
+  </div>
+  <button class="lightbox-nav lightbox-next" id="lightbox-next">&#10095;</button>
+</div>
+
+</body>
+</html>
