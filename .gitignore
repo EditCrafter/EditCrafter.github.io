@@ -1,8 +1,11 @@
 # Agent files
 .playwright-mcp
 .opencode
+.omo
 .claude
+.omc
 .codex
+.omx
 .sisyphus
 
 # Byte-compiled / optimized / DLL files
